@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Estilo para centrar el título */
+    h1 {
+      text-align: left;
+      font-family: 'Arial Round', sans-serif; 
+    }
+
+    /* Estilo para centrar los botones e imagen */
+    .button-container {
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Estilo para los botones con separación */
+    .custom-button {
+      margin-top: 10px; /* Espacio superior para separación */
+    }
+  </style>
+
+  <script>
+
+    var accessToken = "9e41c6347e45fe673793f22d8666d64c87cfe47b";
+    var deviceID = "3b001b001547313036303933";
+    var url = "https://api.particle.io/v1/devices/" + deviceID + "/feed";
+      
+    function feedFish() {
+      $.post(url, { params: "on", access_token: accessToken })
+        .done(function(response) {
+          if (response.return_value == 1) {
+            // Se activa servomotor
+            alert("Alimentar");
+          } else if(response.return_value == 0){
+            // algo salio mal
+            alert("Error")
+          }
+        });
+    }
+
+  </script>
+</head>
+
+<body>
+  <h1>feeding time</h1>
+  <div class="button-container">
+    <input type="button" class="custom-button" onclick="feedFish()" value="FEED" />
+  </div>
+</body>
+</html>
