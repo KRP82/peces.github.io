@@ -28,7 +28,7 @@
 
     var accessToken = "9e41c6347e45fe673793f22d8666d64c87cfe47b";
     var deviceID = "3b001b001547313036303933";
-    var url = "https://api.particle.io/v1/devices/" + deviceID + "/feed";
+    var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
       
     function feedFish() {
       $.post(url, { params: "on", access_token: accessToken })
