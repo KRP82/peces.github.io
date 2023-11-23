@@ -14,7 +14,7 @@
       text-align: left;
       display: flex;
       flex-direction: column;
-      align-items: center;
+      align-items: left;
     }
 
     /* Estilo para los botones con separación */
@@ -34,7 +34,7 @@
         .done(function(response) {
           if (response.return_value == 1) {
             // Se activa servomotor
-            alert("Alimentar");
+            alert("Alimentando");
           } else if(response.return_value == 0){
             // algo salio mal
             alert("Error")
@@ -46,7 +46,7 @@
 </head>
 
 <body>
-  <h1>feeding time</h1>
+  <h1>Alimentador de peces</h1>
   <div class="button-container">
     <input type="button" class="custom-button" onclick="feedFish()" value="FEED" />
   </div>
