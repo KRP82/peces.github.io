@@ -37,7 +37,7 @@
       var anio = document.getElementById("anio").value;
 
       // Realizar la solicitud POST con los valores obtenidos
-      $.post(url, { params: "on", access_token: accessToken, hora: hora, minuto: minuto, dia: dia, mes: mes, anio: anio })
+      $.post(url, { params: "on", access_token: accessToken })
         .done(function(response) {
           if (response.return_value == 1) {
             // Se activa servomotor
