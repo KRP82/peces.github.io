@@ -29,14 +29,7 @@
     var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
       
     function feedFish() {
-      // Obtener los valores de los cuadros de texto
-      var hora = document.getElementById("hora").value;
-      var minuto = document.getElementById("minuto").value;
-      var dia = document.getElementById("dia").value;
-      var mes = document.getElementById("mes").value;
-      var anio = document.getElementById("anio").value;
-
-      // Realizar la solicitud POST con los valores obtenidos
+      // Realizar la solicitud POST sin especificar fecha y hora
       $.post(url, { params: "on", access_token: accessToken })
         .done(function(response) {
           if (response.return_value == 1) {
@@ -48,27 +41,7 @@
           }
         });
     }
-  </script>
-</head>
 
-<body>
-  <h1>Alimentador de peces</h1>
-  <div class="button-container">
-    <!-- Agregar cuadros de texto para las variables -->
-    Hora: <input type="text" id="hora" /><br>
-    Minuto: <input type="text" id="minuto" /><br>
-    Día: <input type="text" id="dia" /><br>
-    Mes: <input type="text" id="mes" /><br>
-    Año: <input type="text" id="anio" /><br>
-
-    <!-- Botón para activar la función al hacer clic -->
-    <input type="button" class="custom-button" onclick="feedFish()" value="Comida" />
-
-    <!-- Botón adicional para ejecutar la función con la fecha y hora ingresadas -->
-    <input type="button" class="custom-button" onclick="feedFishWithDateTime()" value="Comida con Fecha y Hora" />
-  </div>
-
-  <script>
     function feedFishWithDateTime() {
       // Obtener los valores de los cuadros de texto
       var hora = document.getElementById("hora").value;
@@ -90,5 +63,23 @@
         });
     }
   </script>
+</head>
+
+<body>
+  <h1>Alimentador de peces</h1>
+  <div class="button-container">
+    <!-- Agregar cuadros de texto para las variables de fecha y hora -->
+    Hora: <input type="text" id="hora" /><br>
+    Minuto: <input type="text" id="minuto" /><br>
+    Día: <input type="text" id="dia" /><br>
+    Mes: <input type="text" id="mes" /><br>
+    Año: <input type="text" id="anio" /><br>
+
+    <!-- Botón para activar la función con fecha y hora específicas -->
+    <input type="button" class="custom-button" onclick="feedFishWithDateTime()" value="Comida con Fecha y Hora" />
+
+    <!-- Botón para activar la función en cualquier momento -->
+    <input type="button" class="custom-button" onclick="feedFish()" value="Comida en Cualquier Momento" />
+  </div>
 </body>
 </html>
