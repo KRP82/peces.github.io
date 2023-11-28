@@ -29,6 +29,11 @@
     var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
       
     function feedFish() {
+      // Realizar la solicitud POST sin especificar fecha y hora
+      sendPostRequest({ params: "on", access_token: accessToken });
+    }
+
+    function feedFishWithDateTime() {
       // Obtener los valores de los cuadros de texto
       var hora = document.getElementById("hora").value;
       var minuto = document.getElementById("minuto").value;
@@ -37,14 +42,18 @@
       var anio = document.getElementById("anio").value;
 
       // Realizar la solicitud POST con los valores obtenidos
-      $.post(url, { params: "on", access_token: accessToken, hora: hora, minuto: minuto, dia: dia, mes: mes, anio: anio })
+      sendPostRequest({ access_token: accessToken, hora: hora, minuto: minuto, dia: dia, mes: mes, anio: anio });
+    }
+
+    function sendPostRequest(data) {
+      $.post(url, data)
         .done(function(response) {
           if (response.return_value == 1) {
             // Se activa servomotor
-            alert("Alimetando");
-          } else if(response.return_value == 0){
-            // algo salio mal
-            alert("Error");
+            alert("Motor programado. Se activará cuando sea la fecha y hora especificadas.");
+          } else {
+            // Algo salió mal
+            alert("Error al programar el motor");
           }
         });
     }
@@ -54,15 +63,18 @@
 <body>
   <h1>Alimentador de peces</h1>
   <div class="button-container">
-    <!-- Agregar cuadros de texto para las variables -->
+    <!-- Agregar cuadros de texto para las variables de fecha y hora -->
     Hora: <input type="text" id="hora" /><br>
     Minuto: <input type="text" id="minuto" /><br>
     Día: <input type="text" id="dia" /><br>
     Mes: <input type="text" id="mes" /><br>
     Año: <input type="text" id="anio" /><br>
 
-    <!-- Botón para activar la función -->
-    <input type="button" class="custom-button" onclick="feedFish()" value="Comida" />
+    <!-- Botón para activar la función con fecha y hora específicas -->
+    <input type="button" class="custom-button" onclick="feedFishWithDateTime()" value="Programar Motor" />
+
+    <!-- Botón para activar la función en cualquier momento -->
+    <input type="button" class="custom-button" onclick="feedFish()" value="Alimentar en Cualquier Momento" />
   </div>
 </body>
 </html>
