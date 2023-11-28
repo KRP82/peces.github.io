@@ -1,35 +1,68 @@
+<!DOCTYPE html>
 <html>
 <head>
-  <script src="https://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
-
-  <script>
-    var accessToken = "5ab97d510e2356b04c0e2646d3b14ba1cf489948";
-    var deviceID = "3b001b001547313036303933";
-    var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
-
-    function toggleDevice() {
-      // Send a POST request to Particle device to toggle both LED and servo
-      $.post(url, { params: "toggle", access_token: accessToken }, function(data) {
-        // Update the status based on the response
-        var newState = data.result === 1 ? 'on' : 'off';
-        updateStatus(newState);
-      });
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Estilo para centrar el título */
+    h1 {
+      text-align: left;
+      font-family: 'Arial Black', sans-serif; 
     }
 
-    function updateStatus(status) {
-      var statusText = status === 'on' ? 'FOCO ENCENDIDO=ON' : 'FOCO APAGADO=OFF';
-      document.getElementById('status').innerText = statusText;
-      var checkbox = document.getElementById('checkbox');
-      checkbox.checked = (status === 'on');
+    /* Estilo para centrar los botones e imagen a la izquierda */
+    .button-container {
+      text-align: left; /* Alinea el texto a la izquierda */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* Alinea los elementos hijos a la izquierda */
+    }
+
+    /* Estilo para los botones con separación */
+    .custom-button {
+      margin-top: 10px; /* Espacio superior para separación */
+    }
+  </style>
+
+  <script>
+    var accessToken = "9e41c6347e45fe673793f22d8666d64c87cfe47b";
+    var deviceID = "3b001b001547313036303933";
+    var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
+      
+    function feedFish() {
+      // Obtener los valores de los cuadros de texto
+      var hora = document.getElementById("hora").value;
+      var minuto = document.getElementById("minuto").value;
+      var dia = document.getElementById("dia").value;
+      var mes = document.getElementById("mes").value;
+      var anio = document.getElementById("anio").value;
+
+      // Realizar la solicitud POST con los valores obtenidos
+      $.post(url, { params: "on", access_token: accessToken, hora: hora, minuto: minuto, dia: dia, mes: mes, anio: anio })
+        .done(function(response) {
+          if (response.return_value == 1) {
+            // Se activa servomotor
+            alert("Alimetando");
+          } else if(response.return_value == 0){
+            // algo salio mal
+            alert("Error");
+          }
+        });
     }
   </script>
 </head>
 
 <body>
-  <h1>Toggle Control</h1>
-  <p id="status"></p>
-  <input type="button" onClick="toggleDevice()" value="Toggle"/>
-  <input type="checkbox" id="checkbox" disabled/>
-</body>
+  <h1>Alimentador de peces</h1>
+  <div class="button-container">
+    <!-- Agregar cuadros de texto para las variables -->
+    Hora: <input type="text" id="hora" /><br>
+    Minuto: <input type="text" id="minuto" /><br>
+    Día: <input type="text" id="dia" /><br>
+    Mes: <input type="text" id="mes" /><br>
+    Año: <input type="text" id="anio" /><br>
 
+    <!-- Botón para activar la función -->
+    <input type="button" class="custom-button" onclick="feedFish()" value="Comida" />
+  </div>
+</body>
 </html>
