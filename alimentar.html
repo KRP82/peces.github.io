@@ -23,14 +23,23 @@
     }
   </style>
 
-  <script>
+    <script>
+
     var accessToken = "9e41c6347e45fe673793f22d8666d64c87cfe47b";
     var deviceID = "3b001b001547313036303933";
     var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
       
     function feedFish() {
-      // Realizar la solicitud POST sin especificar fecha y hora
-      sendPostRequest({ params: "on", access_token: accessToken });
+      $.post(url, { params: "on", access_token: accessToken })
+        .done(function(response) {
+          if (response.return_value == 1) {
+            // Se activa servomotor
+            alert("Alimetando");
+          } else if(response.return_value == 0){
+            // algo salio mal
+            alert("Error")
+          }
+        });
     }
 
     function feedFishWithDateTime() {
