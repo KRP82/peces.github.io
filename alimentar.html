@@ -1,43 +1,94 @@
+<!DOCTYPE html>
 <html>
 <head>
-<script src="https://code.jquery.com/jquery-1.7.2.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <style>
+    /* Estilo para centrar el título */
+    h1 {
+      text-align: left;
+      font-family: 'Arial Black', sans-serif; 
+    }
 
-<script>
-var accessToken = "5ab97d510e2356b04c0e2646d3b14ba1cf489948";
-var deviceID = "3b001b001547313036303933";
-var url = "https://api.particle.io/v1/devices/" + deviceID + "/led";
+    /* Estilo para centrar los botones e imagen a la izquierda */
+    .button-container {
+      text-align: left; /* Alinea el texto a la izquierda */
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* Alinea los elementos hijos a la izquierda */
+    }
 
-function switchOn() {
-    $.post(url, { params: "on", access_token: accessToken }, function(data) {
-        updateStatus("on");
-    });
-}
+    /* Estilo para los botones con separación */
+    .custom-button {
+      margin-top: 10px; /* Espacio superior para separación */
+    }
+  </style>
 
-function switchOff() {
-    $.post(url, { params: "off", access_token: accessToken }, function(data) {
-        updateStatus("off");
-    });
-}
+  <script>
+    var accessToken = "9e41c6347e45fe673793f22d8666d64c87cfe47b";
+    var deviceID = "3b001b001547313036303933";
+    var url = "https://api.particle.io/v1/devices/" + deviceID + "/control";
+      
+    function feedFish() {
+      // Obtener los valores de los cuadros de texto
+      var hora = document.getElementById("hora").value;
+      var minuto = document.getElementById("minuto").value;
+      var dia = document.getElementById("dia").value;
+      var mes = document.getElementById("mes").value;
+      var anio = document.getElementById("anio").value;
 
-function updateStatus(status) {
-    var statusText = status === 'on' ? 'FOCO ENCENDIDO=ON' : 'FOCO APAGADO=OFF';
-    document.getElementById('status').innerText = statusText;
-    var checkbox = document.getElementById('checkbox');
-    checkbox.checked = (status === 'on');
-}
-
-</script>
+      // Realizar la solicitud POST con los valores obtenidos
+      $.post(url, { params: "on", access_token: accessToken, hora: hora, minuto: minuto, dia: dia, mes: mes, anio: anio })
+        .done(function(response) {
+          if (response.return_value == 1) {
+            // Se activa servomotor
+            alert("Alimentando");
+          } else if(response.return_value == 0){
+            // algo salió mal
+            alert("Error");
+          }
+        });
+    }
+  </script>
 </head>
 
 <body>
-<h1>On/Off Control</h1>
+  <h1>Alimentador de peces</h1>
+  <div class="button-container">
+    <!-- Agregar cuadros de texto para las variables -->
+    Hora: <input type="text" id="hora" /><br>
+    Minuto: <input type="text" id="minuto" /><br>
+    Día: <input type="text" id="dia" /><br>
+    Mes: <input type="text" id="mes" /><br>
+    Año: <input type="text" id="anio" /><br>
 
-<p id="status"></p>
-<input type="button" onClick="switchOn()" value="ON"/>
-<input type="button" onClick="switchOff()" value="OFF"/>
-    
-    <input type="checkbox" id="checkbox" disabled/>
+    <!-- Botón para activar la función al hacer clic -->
+    <input type="button" class="custom-button" onclick="feedFish()" value="Comida" />
 
+    <!-- Botón adicional para ejecutar la función con la fecha y hora ingresadas -->
+    <input type="button" class="custom-button" onclick="feedFishWithDateTime()" value="Comida con Fecha y Hora" />
+  </div>
 
+  <script>
+    function feedFishWithDateTime() {
+      // Obtener los valores de los cuadros de texto
+      var hora = document.getElementById("hora").value;
+      var minuto = document.getElementById("minuto").value;
+      var dia = document.getElementById("dia").value;
+      var mes = document.getElementById("mes").value;
+      var anio = document.getElementById("anio").value;
+
+      // Realizar la solicitud POST con los valores obtenidos
+      $.post(url, { params: "on", access_token: accessToken, hora: hora, minuto: minuto, dia: dia, mes: mes, anio: anio })
+        .done(function(response) {
+          if (response.return_value == 1) {
+            // Se activa servomotor
+            alert("Alimentando");
+          } else if(response.return_value == 0){
+            // algo salió mal
+            alert("Error");
+          }
+        });
+    }
+  </script>
 </body>
 </html>
